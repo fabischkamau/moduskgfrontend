@@ -63,7 +63,8 @@ const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 0,
-      content: "Welcome! How can I assist you with Neo4j today?",
+      content:
+        "Welcome! I interact with your Neo4j knowledge graph to give you accurate answers from your data.",
       role: "assistant",
     },
   ]);
