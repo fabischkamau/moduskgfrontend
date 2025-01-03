@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "proxy": "https://knowledgegraphs-cognitgraph.hypermode.app/graphql",
+  "proxy": "https://modus-kg-cognitgraph.hypermode.app/graphql",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

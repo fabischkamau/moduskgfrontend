@@ -76,22 +76,25 @@ const Chat = () => {
   // Function to scroll to bottom
   const scrollToBottom = () => {
     if (scrollViewportRef.current && scrollContentRef.current) {
-      const viewport = scrollViewportRef.current;
-      const content = scrollContentRef.current;
-      viewport.scrollTop = content.clientHeight;
+      requestAnimationFrame(() => {
+        scrollViewportRef.current?.scrollTo({
+          top: scrollContentRef.current?.scrollHeight,
+          behavior: "smooth",
+        });
+      });
     }
   };
 
-  // Scroll to bottom whenever messages change
+  // Scroll when messages update
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
+  // Faster streaming with larger chunks
   const simulateStreaming = async (fullContent: string, messageId: number) => {
     return new Promise<void>((resolve) => {
       let currentIndex = 0;
-      const chunkSize = 3;
-
+      const chunkSize = 10; // Increased from 3
       const streamInterval = setInterval(() => {
         if (currentIndex < fullContent.length) {
           currentIndex += chunkSize;
@@ -100,30 +103,23 @@ const Chat = () => {
           setMessages((prevMessages) =>
             prevMessages.map((msg) =>
               msg.id === messageId
-                ? {
-                    ...msg,
-                    content: displayContent,
-                    isStreaming: true,
-                  }
+                ? { ...msg, content: displayContent, isStreaming: true }
                 : msg
             )
           );
+          scrollToBottom();
         } else {
           setMessages((prevMessages) =>
             prevMessages.map((msg) =>
               msg.id === messageId
-                ? {
-                    ...msg,
-                    content: fullContent,
-                    isStreaming: false,
-                  }
+                ? { ...msg, content: fullContent, isStreaming: false }
                 : msg
             )
           );
           clearInterval(streamInterval);
           resolve();
         }
-      }, 30);
+      }, 10);
     });
   };
 

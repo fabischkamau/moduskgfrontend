@@ -12,7 +12,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": "https://knowledgegraphs-cognitgraph.hypermode.app/graphql",
+      "/api": "https://modus-kg-cognitgraph.hypermode.app/graphql",
     },
   },
 });
